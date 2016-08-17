@@ -71,3 +71,7 @@ test('fetchCurrentCity with separate success and error callbacks', function(done
 
   fetchCurrentCity(result => done(), error => done(error));
 });
+
+test('fetchCurrentCity pass the callback later ons', function() {
+
+});
