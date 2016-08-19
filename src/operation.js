@@ -55,6 +55,14 @@ function Operation() {
     return operation;
 }
 
+function fetchForecast(city) {
+    const operation = new Operation();
+
+    getForecast(city, operation.nodeCallback);
+
+    return operation;
+}
+
 function fetchWeather(city) {
     const operation = new Operation();
 
