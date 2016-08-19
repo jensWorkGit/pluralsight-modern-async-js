@@ -62,7 +62,7 @@ function getForecast(city, callback) {
     }, delayms)
 }
 
-//suite.only('operations')
+suite.only('operations')
 
 // test('fetchCurrentCity with separate success and error callbacks', function (done) {
 //     fetchCurrentCity(result => done(), error => done(error));
