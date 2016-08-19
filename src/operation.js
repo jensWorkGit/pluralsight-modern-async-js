@@ -31,7 +31,9 @@ function fetchCurrentCity() {
     });
 
     operation.onCompletion = function onCompletion(onSuccess, onError) {
-        operation.successReactions.push(onSuccess);
+        const noop = function () {};
+
+        operation.successReactions.push(onSuccess || noop);
         operation.errorReactions.push(onError);
     };
 
@@ -121,6 +123,7 @@ test('register only success handler, ignores error handler', function (done) {
 
     operation.onCompletion(result => done("shouldn't succeed"));
 
+    // trigger failure to make sure noop registered
     operation.onFailure(error => done(error));
 
 });
