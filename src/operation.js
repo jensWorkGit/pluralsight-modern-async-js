@@ -69,7 +69,6 @@ function getForecast(city, callback) {
 // });g
 
 test('fetchCurrentCity pass the callback later on', function (done) {
-    debugger;
     // initiate operation
     const operation = fetchCurrentCity();
 
