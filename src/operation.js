@@ -30,13 +30,13 @@ function fetchCurrentCity() {
         operation.successReactions.forEach(r => r(result));
     });
 
-    operation.setCallbacks = function setCallbacks(onSuccess, onError) {
+    operation.onCompletion = function onCompletion(onSuccess, onError) {
         operation.successReactions.push(onSuccess);
         operation.errorReactions.push(onError);
     };
 
     operation.onFailure = function onFailure(onError) {
-        operation.setCallbacks(null, onError)
+        operation.onCompletion(null, onError)
     };
 
     return operation;
@@ -87,7 +87,7 @@ test('fetchCurrentCity pass the callback later on', function (done) {
     const operation = fetchCurrentCity();
 
     // register callbacks
-    operation.setCallbacks(
+    operation.onCompletion(
         result => done(),
         error => done(error)
     );
@@ -99,19 +99,29 @@ test('pass multiple callbacks - all of them are called', function (done) {
     const multiDone = callDone(done).afterTwoCalls();
 
     // register callbacks
-    operation.setCallbacks(result => multiDone());
-    operation.setCallbacks(result => multiDone());
+    operation.onCompletion(result => multiDone());
+    operation.onCompletion(result => multiDone());
 });
 
-test('pass multiple callbacks - all of them are called - pass errors', function (done) {
+test('register only error handler, ignores success handler', function (done) {
     // initiate operation
     const operation = fetchCurrentCity();
-    const multiDone = callDone(done).afterTwoCalls();
 
     // register callbacks
-    operation.setCallbacks(result => multiDone());
-    //operation.setCallbacks(null, error => multiDone());
 
-    operation.onFailure(error => multiDone());
+    operation.onFailure(error => done(error));
+    operation.onCompletion(result => done());
+});
+
+test('register only success handler, ignores error handler', function (done) {
+    // TODO operation that can fail.
+    const operation = fetchCurrentCity();
+
+    // register callbacks
+
+    operation.onCompletion(result => done("shouldn't succeed"));
+
+    operation.onFailure(error => done(error));
+
 });
 
