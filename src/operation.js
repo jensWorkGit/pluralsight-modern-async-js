@@ -150,10 +150,10 @@ test('noop if no error handler passed', function (done) {
 
 
     // noop should register for error handler
-    operation.onCompletion(result => done("shouldn't succeed"));
+    operation.onCompletion(result => done(new Error("shouldn't succeed")));
 
     // trigger failure to make sure noop registered
-    operation.onFailure(error => done(error));
+    operation.onFailure(error => done());
 
 });
 
