@@ -121,6 +121,7 @@ test('register only success handler, ignores error handler', function (done) {
 
     // register callbacks
 
+    // noop should register for error handler
     operation.onCompletion(result => done("shouldn't succeed"));
 
     // trigger failure to make sure noop registered
