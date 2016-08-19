@@ -10,26 +10,22 @@ function getCurrentCity(callback) {
 }
 
 function fetchCurrentCity() {
-    var onSuccess;
-    var onError;
-    function setCallback(su, err) {
-        onSuccess = su;
-        onError = err;
+    const operation = {};
 
-        getCurrentCity(function (error, result) {
-            if(error) {
-                onError(error);
-                return;
-            }
-            onSuccess(result);
-        });
-    }
+    getCurrentCity(function (error, result) {
+        if(error) {
+            operation.onError(error);
+            return;
+        }
+        operation.onSuccess(result);
+    });
 
-    return {
-        setCallback: setCallback
-    }
+    operation.setCallbacks = function setCallbacks(onSuccess, onError) {
+        operation.onSuccess = onSuccess;
+        operation.onError = onError;
+    };
 
-
+    return operation;
 }
 
 function getWeather(city, callback) {
@@ -68,13 +64,17 @@ function getForecast(city, callback) {
 
 suite.only('operations')
 
-test('fetchCurrentCity with separate success and error callbacks', function (done) {
-    fetchCurrentCity(result => done(), error => done(error));
-});
+// test('fetchCurrentCity with separate success and error callbacks', function (done) {
+//     fetchCurrentCity(result => done(), error => done(error));
+// });
 
 test('fetchCurrentCity pass the callback later on', function (done) {
+
+    // initiate operation
     const operation = fetchCurrentCity();
-    operation.setCallback(
+
+    // register callbacks
+    operation.setCallbacks(
         result => done(),
         error => done(error)
     );
