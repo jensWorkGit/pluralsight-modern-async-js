@@ -44,6 +44,42 @@ function fetchCurrentCity() {
     return operation;
 }
 
+function fetchWeather(city) {
+    const operation = {
+        successReactions: [],
+        errorReactions: []
+    };
+
+    getWeather(city, function (error, result) {
+        if(error) {
+            operation.errorReactions.forEach(r => r(error));
+
+            // operation.errorReactions.forEach(function (errorReaction) {
+            //     errorReaction(error);
+            // });
+
+            return;
+        }
+        //operation.onSuccess(result);
+
+        operation.successReactions.forEach(r => r(result));
+    });
+
+    operation.onCompletion = function onCompletion(onSuccess, onError) {
+        const noop = function () {};
+
+        operation.successReactions.push(onSuccess || noop);
+        operation.errorReactions.push(onError || noop);
+    };
+
+    operation.onFailure = function onFailure(onError) {
+        operation.onCompletion(null, onError)
+    };
+
+    return operation;
+}
+
+
 function getWeather(city, callback) {
     setTimeout(function () {
 
@@ -105,21 +141,21 @@ test('pass multiple callbacks - all of them are called', function (done) {
     operation.onCompletion(result => multiDone());
 });
 
-test('register only error handler, ignores success handler', function (done) {
-    // initiate operation
-    const operation = fetchCurrentCity();
+test('noop if no success handler passed', function (done) {
 
-    // register callbacks
+    const operation = fetchWeather();
 
+    // noop should register for success  handler
     operation.onFailure(error => done(error));
+
+    // trigger success to make sure noop registered
     operation.onCompletion(result => done());
 });
 
-test('register only success handler, ignores error handler', function (done) {
+test('noop if no error handler passed', function (done) {
     // TODO operation that can fail.
     const operation = fetchCurrentCity();
 
-    // register callbacks
 
     // noop should register for error handler
     operation.onCompletion(result => done("shouldn't succeed"));
