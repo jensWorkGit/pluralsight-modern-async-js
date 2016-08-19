@@ -9,14 +9,27 @@ function getCurrentCity(callback) {
     }, delayms)
 }
 
-function fetchCurrentCity(onSuccess, onError) {
-    getCurrentCity(function (error, result) {
-        if(error) {
-            onError(error);
-            return;
-        }
-        onSuccess(result);
-    })
+function fetchCurrentCity() {
+    var onSuccess;
+    var onError;
+    function setCallback(su, err) {
+        onSuccess = su;
+        onError = err;
+
+        getCurrentCity(function (error, result) {
+            if(error) {
+                onError(error);
+                return;
+            }
+            onSuccess(result);
+        });
+    }
+
+    return {
+        setCallback: setCallback
+    }
+
+
 }
 
 function getWeather(city, callback) {
@@ -55,23 +68,23 @@ function getForecast(city, callback) {
 
 suite.only('operations')
 
-test('fetchCurrentCity with separate success and error callbacks', function (done) {
-    function onSuccess(result) {
-        console.log(result);
-    }
+// test('fetchCurrentCity with separate success and error callbacks', function (done) {
+//     function onSuccess(result) {
+//         console.log(result);
+//     }
+//
+//     function onError(error) {
+//         console.log(error);
+//     }
+//
+//
+//     //fetchCurrentCity(onSuccess, onError);
+//     //fetchCurrentCity(result => console.log(result), error => console.log(error));
+//
+//     fetchCurrentCity(result => done(), error => done(error));
+// });
 
-    function onError(error) {
-        console.log(error);
-    }
-
-
-    //fetchCurrentCity(onSuccess, onError);
-    //fetchCurrentCity(result => console.log(result), error => console.log(error));
-
-    fetchCurrentCity(result => done(), error => done(error));
-});
-
-test('fetchCurrentCity pass the callback later on', function () {
+test('fetchCurrentCity pass the callback later on', function (done) {
     const operation = fetchCurrentCity();
     operation.setCallback(
         result => done(),
