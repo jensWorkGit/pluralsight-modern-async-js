@@ -5,7 +5,14 @@
     "expect": "^1.20.1",
     "live-server": "^1.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-preset-es2015": "^6.13.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-sourcemaps": "^1.6.0"
+  },
   "scripts": {
     "test": "live-server --port=8071"
   },

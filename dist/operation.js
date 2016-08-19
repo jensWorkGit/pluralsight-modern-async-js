@@ -5,15 +5,14 @@ function getCurrentCity(callback) {
 
         const city = "New York, NY";
         callback(null, city);
-
-    }, delayms)
+    }, delayms);
 }
 
 function fetchCurrentCity() {
     const operation = {};
 
     getCurrentCity(function (error, result) {
-        if(error) {
+        if (error) {
             operation.onError(error);
             return;
         }
@@ -31,7 +30,7 @@ function fetchCurrentCity() {
 function getWeather(city, callback) {
     setTimeout(function () {
 
-        if(!city) {
+        if (!city) {
             callback(new Error("City required to get weather"));
             return;
         }
@@ -40,15 +39,14 @@ function getWeather(city, callback) {
             temp: 50
         };
 
-        callback(null, weather)
-
-    }, delayms)
+        callback(null, weather);
+    }, delayms);
 }
 
 function getForecast(city, callback) {
     setTimeout(function () {
 
-        if(!city) {
+        if (!city) {
             callback(new Error("City required to get forecast"));
             return;
         }
@@ -57,9 +55,8 @@ function getForecast(city, callback) {
             fiveDay: [60, 70, 80, 45, 50]
         };
 
-        callback(null, fiveDay)
-
-    }, delayms)
+        callback(null, fiveDay);
+    }, delayms);
 }
 
 //suite.only('operations')
@@ -74,8 +71,6 @@ test('fetchCurrentCity pass the callback later on', function (done) {
     const operation = fetchCurrentCity();
 
     // register callbacks
-    operation.setCallbacks(
-        result => done(),
-        error => done(error)
-    );
+    operation.setCallbacks(result => done(), error => done(error));
 });
+//# sourceMappingURL=operation.js.map
