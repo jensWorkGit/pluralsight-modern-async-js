@@ -7,7 +7,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "live-server"
+    "test": "live-server --port=8071"
   },
   "author": "Wes Higbee"
 }

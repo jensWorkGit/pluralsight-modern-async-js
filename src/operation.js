@@ -1,77 +1,80 @@
 const delayms = 1;
 
 function getCurrentCity(callback) {
-  setTimeout(function () {
+    setTimeout(function () {
 
-    const city = "New York, NY";
-    callback(null, city);
+        const city = "New York, NY";
+        callback(null, city);
 
-  }, delayms)
+    }, delayms)
 }
 
 function fetchCurrentCity(onSuccess, onError) {
-  getCurrentCity(function (error, result) {
-    if(error) {
-      onError(error);
-      return;
-    }
-    onSuccess(result);
-  })
-    
+    getCurrentCity(function (error, result) {
+        if(error) {
+            onError(error);
+            return;
+        }
+        onSuccess(result);
+    })
 }
 
 function getWeather(city, callback) {
-  setTimeout(function () {
+    setTimeout(function () {
 
-    if (!city) {
-      callback(new Error("City required to get weather"));
-      return;
-    }
+        if(!city) {
+            callback(new Error("City required to get weather"));
+            return;
+        }
 
-    const weather = {
-      temp: 50
-    };
+        const weather = {
+            temp: 50
+        };
 
-    callback(null, weather)
+        callback(null, weather)
 
-  }, delayms)
+    }, delayms)
 }
 
 function getForecast(city, callback) {
-  setTimeout(function () {
+    setTimeout(function () {
 
-    if (!city) {
-      callback(new Error("City required to get forecast"));
-      return;
-    }
+        if(!city) {
+            callback(new Error("City required to get forecast"));
+            return;
+        }
 
-    const fiveDay = {
-      fiveDay: [60, 70, 80, 45, 50]
-    };
+        const fiveDay = {
+            fiveDay: [60, 70, 80, 45, 50]
+        };
 
-    callback(null, fiveDay)
+        callback(null, fiveDay)
 
-  }, delayms)
+    }, delayms)
 }
 
 suite.only('operations')
 
-test('fetchCurrentCity with separate success and error callbacks', function(done) {
-  function onSuccess(result) {
-      console.log(result);
-  }
-  
-  function onError(error) {
-      console.log(error);
-  }
+test('fetchCurrentCity with separate success and error callbacks', function (done) {
+    function onSuccess(result) {
+        console.log(result);
+    }
+
+    function onError(error) {
+        console.log(error);
+    }
 
 
-  //fetchCurrentCity(onSuccess, onError);
-  //fetchCurrentCity(result => console.log(result), error => console.log(error));
+    //fetchCurrentCity(onSuccess, onError);
+    //fetchCurrentCity(result => console.log(result), error => console.log(error));
 
-  fetchCurrentCity(result => done(), error => done(error));
+    fetchCurrentCity(result => done(), error => done(error));
 });
 
-test('fetchCurrentCity pass the callback later on', function() {
-
+test('fetchCurrentCity pass the callback later on', function () {
+    const operation = fetchCurrentCity();
+    operation.setCallback(
+        result => done(),
+        error => done(error)
+    );
 });
