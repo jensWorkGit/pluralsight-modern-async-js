@@ -78,3 +78,13 @@ test('fetchCurrentCity pass the callback later on', function (done) {
         error => done(error)
     );
 });
+
+test('pass multiple callbacks - all of them are called', function (done) {
+    // initiate operation
+    const operation = fetchCurrentCity();
+
+    // register callbacks
+    operation.setCallbacks(result => done());
+    operation.setCallbacks(result => done());
+});
+
