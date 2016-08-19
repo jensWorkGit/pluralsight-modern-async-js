@@ -35,6 +35,10 @@ function fetchCurrentCity() {
         operation.errorReactions.push(onError);
     };
 
+    operation.onFailure = function onFailure(onError) {
+        operation.setCallbacks(null, onError)
+    };
+
     return operation;
 }
 
@@ -88,6 +92,7 @@ test('fetchCurrentCity pass the callback later on', function (done) {
         error => done(error)
     );
 });
+
 test('pass multiple callbacks - all of them are called', function (done) {
     // initiate operation
     const operation = fetchCurrentCity();
@@ -96,5 +101,17 @@ test('pass multiple callbacks - all of them are called', function (done) {
     // register callbacks
     operation.setCallbacks(result => multiDone());
     operation.setCallbacks(result => multiDone());
+});
+
+test('pass multiple callbacks - all of them are called - pass errors', function (done) {
+    // initiate operation
+    const operation = fetchCurrentCity();
+    const multiDone = callDone(done).afterTwoCalls();
+
+    // register callbacks
+    operation.setCallbacks(result => multiDone());
+    //operation.setCallbacks(null, error => multiDone());
+
+    operation.onFailure(error => multiDone());
 });
 
